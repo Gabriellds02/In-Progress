@@ -1,4 +1,7 @@
-rom tkinter import *
+from socket import MsgFlag
+from tkinter import *
+from traceback import print_tb
+from numpy import FPE_UNDERFLOW
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import pandas as pd
@@ -6,7 +9,33 @@ import time
 import urllib
 
 def btn_clicked():
-   tabela = pd.read_excel(r'Cobrancas.xlsx')
+    funcionario = entry0.get()
+    status_pg = entry1.get("1.0", END)
+    df_cobracas = pd.read_excel(r'C:\Users\Escritorio\Desktop\Criando Sistema de envio automático de MSG\SistemaCobrança\Proxlight_Designer_Export\Cobranca.xlsx')
+    #display(df_cobracas)
+    
+    ##### Abrir o Selinium #########
+    nav = webdriver.Chrome(executable_path=r'./chromedriver')
+    
+    
+    ############### Lógica de busca de devedor ###############
+
+    for i, situacao in enumerate (df_cobracas ['Situação Pagamento']):
+        if situacao in status_pg:
+            nome = df_cobracas.loc[i,'Nome']
+            tel = df_cobracas.loc[i, 'Telefone']
+            valor_devido = df_cobracas.loc[i,'Valor Devido']
+            #display(nome, tel, valor_devido)
+            msg = f"Prezado cliente.\nSou a assistente virtual, {funcionario}. Gostaria de informar que consta em nosso sistema, saldo devedor, no valor de R$ {valor_devido} reais, em nome de {nome}.\nAtenciosamente,\nAssistente virtual de negócio, {funcionario}"
+            texto = urllib.parse.quote(msg)
+            display(texto)
+            time.sleep(5)
+            nav.get(f"https://web.whatsapp.com/send?phone={tel}&text={texto}")
+            time.sleep(10)
+            nav.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[2]').send_keys(Keys.ENTER)
+        nav.quit
+    print("atividade funcional encerrada")
+ 
 
 
 window = Tk()
