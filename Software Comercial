@@ -1,0 +1,75 @@
+rom tkinter import *
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import pandas as pd
+import time
+import urllib
+
+def btn_clicked():
+   tabela = pd.read_excel(r'Cobrancas.xlsx')
+
+
+window = Tk()
+
+window.geometry("830x456")
+window.configure(bg = "#ffffff")
+canvas = Canvas(
+    window,
+    bg = "#ffffff",
+    height = 456,
+    width = 830,
+    bd = 0,
+    highlightthickness = 0,
+    relief = "ridge")
+canvas.place(x = 0, y = 0)
+
+background_img = PhotoImage(file = f"background.png")
+background = canvas.create_image(
+    415.0, 228.0,
+    image=background_img)
+
+entry0_img = PhotoImage(file = f"img_textBox0.png")
+entry0_bg = canvas.create_image(
+    629.0, 276.5,
+    image = entry0_img)
+
+entry0 = Entry(
+    bd = 0,
+    bg = "#ffffff",
+    highlightthickness = 0)
+
+entry0.place(
+    x = 497, y = 263,
+    width = 264,
+    height = 25)
+
+entry1_img = PhotoImage(file = f"img_textBox1.png")
+entry1_bg = canvas.create_image(
+    626.0, 364.5,
+    image = entry1_img)
+
+entry1 = Text(
+    bd = 0,
+    bg = "#ffffff",
+    highlightthickness = 0)
+
+entry1.place(
+    x = 494, y = 332,
+    width = 264,
+    height = 63)
+
+img0 = PhotoImage(file = f"img0.png")
+b0 = Button(
+    image = img0,
+    borderwidth = 0,
+    highlightthickness = 0,
+    command = btn_clicked,
+    relief = "flat")
+
+b0.place(
+    x = 570, y = 411,
+    width = 101,
+    height = 32)
+
+window.resizable(False, False)
+window.mainloop()
